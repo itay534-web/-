@@ -1,0 +1,9 @@
+{
+  "appId": "il.co.kolhashoneh.halachot",
+  "appName": "כל השונה הלכות",
+  "webDir": "www",
+  "android": {
+    "backgroundColor": "#ffffff",
+    "adjustMarginsForEdgeToEdge": "auto"
+  }
+}

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>כל השונה הלכות</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- שורה עליונה: לוח שנה | תאריך (שורה אחת) | חזרה להיום -->
+  <header id="top">
+    <button id="btnCal" class="ibtn" aria-label="לוח שנה">
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>
+    </button>
+    <h1 id="dateLine"></h1>
+    <button id="btnToday" class="tbtn">היום</button>
+  </header>
+
+  <!-- עמוד ההלכות -->
+  <main id="page"><div id="content"></div></main>
+
+  <!-- סימון קראתי -->
+  <div id="readBar"><button id="btnRead"></button></div>
+
+  <!-- שורה תחתונה: אחורה (ימין) | תצוגה | תזכורת | חיפוש | קדימה (שמאל) -->
+  <nav id="bottom">
+    <button id="btnPrev" class="ibtn" aria-label="יום קודם">
+      <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#000" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
+    </button>
+    <button id="btnDisplay" class="ibtn" aria-label="גודל והדגשת כתב">
+      <span class="aa"><span class="aBig">A</span><span class="aSmall">A</span></span>
+    </button>
+    <button id="btnBell" class="ibtn" aria-label="תזכורת">
+      <svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 17V11a6 6 0 0 1 12 0v6l1.5 2h-15z"/><path d="M10 21a2 2 0 0 0 4 0"/></svg>
+    </button>
+    <button id="btnSearch" class="ibtn" aria-label="חיפוש">
+      <svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="#000" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg>
+    </button>
+    <button id="btnNext" class="ibtn" aria-label="יום הבא">
+      <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#000" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12H4M10 6l-6 6 6 6"/></svg>
+    </button>
+  </nav>
+
+  <div id="overlay" hidden></div>
+
+  <!-- חלונית גודל כתב -->
+  <section id="panelDisplay" class="sheet" hidden>
+    <div class="sheetTitle">גודל והדגשת כתב</div>
+    <div class="pill" dir="ltr">
+      <span class="pA small">A</span>
+      <div id="slider" role="slider" tabindex="0" aria-label="גודל כתב" aria-valuemin="0" aria-valuemax="8" aria-valuenow="4">
+        <div id="track"></div>
+        <div id="thumb"></div>
+      </div>
+      <span class="pA big">A</span>
+    </div>
+    <label class="row"><input type="checkbox" id="chkBold"> <span>הדגשת הטקסט</span></label>
+    <div class="hint">במרכז הפס הטקסט מותאם אוטומטית כך שכל ההלכות נכנסות בעמוד אחד. גרירה ימינה מגדילה (ייתכן שיידרש לגלול), גרירה שמאלה מקטינה.</div>
+  </section>
+
+  <!-- חלונית תזכורת -->
+  <section id="panelBell" class="sheet" hidden>
+    <div class="sheetTitle">תזכורת יומית</div>
+    <label class="row"><input type="checkbox" id="chkRem"> <span>הפעל תזכורת יומית</span></label>
+    <div class="row">
+      <span>שעה:</span>
+      <input type="time" id="remTime" value="08:00">
+    </div>
+    <button id="btnRemSave" class="primary">שמור תזכורת</button>
+    <div id="remMsg" class="hint"></div>
+  </section>
+
+  <!-- חלונית חיפוש -->
+  <section id="panelSearch" class="sheet tall" hidden>
+    <div class="sheetTitle">חיפוש</div>
+    <input type="search" id="q" placeholder="הקלד מילה או כמה מילים..." autocomplete="off" enterkeyhint="search">
+    <div id="qInfo" class="hint"></div>
+    <div id="results"></div>
+  </section>
+
+  <!-- חלונית לוח שנה -->
+  <section id="panelCal" class="sheet tall" hidden>
+    <div class="calHead">
+      <button id="calNext" class="ibtn small" aria-label="חודש הבא">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#000" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <div class="calTitle"><div id="calMonth"></div><div id="calGreg"></div></div>
+      <button id="calPrev" class="ibtn small" aria-label="חודש קודם">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#000" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+    <div id="calGrid"></div>
+    <div id="calStat" class="hint"></div>
+    <div class="legend"><span class="sw green"></span> נקרא <span class="sw today"></span> היום</div>
+  </section>
+
+  <div id="toast" hidden></div>
+</div>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
